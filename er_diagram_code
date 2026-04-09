@@ -1,0 +1,76 @@
+erDiagram
+
+    USER {
+        int user_id PK
+        string username
+        string email
+        string password_hash
+        datetime created_at
+    }
+
+    BOARD {
+        int board_id PK
+        int user_id FK
+        string title
+        string description
+        datetime created_at
+    }
+
+    PIN {
+        int pin_id PK
+        int user_id FK
+        int board_id FK
+        string title
+        string description
+        string image_url
+        string link
+        datetime created_at
+    }
+
+    COMMENT {
+        int comment_id PK
+        int user_id FK
+        int pin_id FK
+        int parent_comment_id FK
+        string content
+        datetime created_at
+    }
+
+    LIKE {
+        int like_id PK
+        int user_id FK
+        int pin_id FK
+        datetime created_at
+    }
+
+    FOLLOW {
+        int follower_id FK
+        int following_id FK
+        datetime created_at
+    }
+
+    SAVE {
+        int save_id PK
+        int user_id FK
+        int pin_id FK
+        int board_id FK
+        datetime created_at
+    }
+
+    %% Relationships
+
+    USER ||--o{ BOARD : creates
+    USER ||--o{ PIN : creates
+    USER ||--o{ COMMENT : writes
+    USER ||--o{ LIKE : likes
+    USER ||--o{ SAVE : saves
+
+    BOARD ||--o{ PIN : contains
+
+    PIN ||--o{ COMMENT : has
+    PIN ||--o{ LIKE : receives
+    PIN ||--o{ SAVE : saved_in
+
+    COMMENT ||--o{ COMMENT : replies_to
+
+    USER ||--o{ FOLLOW : follows
